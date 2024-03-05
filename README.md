@@ -1,3 +1,7 @@
+<div align="center">
+   <img src="./logos/logo_canvas.jpg" height="300px">
+</div>
+
 # CANVAS - 3D editor for the AI-enhanced differentiable Ray Tracer ARTIST
 
 [![](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
