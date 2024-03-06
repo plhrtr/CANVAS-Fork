@@ -1,5 +1,50 @@
 {% extends 'editor/base.html' %}
 
 {% block body %}
-    Hello World!
+    <div class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a class="navbar-brand mx-4" href="#">CANVAS Editor</a>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <!-- file -->
+                <li class="nav-item dropdown mx-2">
+                    <a class="nav-link dropdown-toggle" id="fileDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">File</a>
+                    <div class="dropdown-menu" aria-labelledby="fileDropdown">
+                        <a class="dropdown-item" id="new" href="#">New</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" id="import" href="#">Import</a>
+                        <a class="dropdown-item" id="export" href="#">Export</a>
+                    </div>
+                </li>
+
+                <!-- insert -->
+                <li class="nav-item dropdown mx-2">
+                    <a class="nav-link dropdown-toggle" id="insertDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Insert</a>
+                    <div class="dropdown-menu" aria-labelledby="insertDropdown">
+                        <a class="dropdown-item" id="heliostat" href="#">Heliostat</a>
+                        <a class="dropdown-item" id="receiver" href="#">Receiver</a>
+                        <a class="dropdown-item" id="lightSource" href="#">Light source</a>
+                    </div>
+                </li>
+
+                <!-- view -->
+                <li class="nav-item dropdown mx-2">
+                    <a class="nav-link dropdown-toggle" id="viewDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View</a>
+                    <div class="dropdown-menu" aria-labelledby="viewDropdown">
+                        <a class="dropdown-item" id="fullscreen" href="#">Fullscreen</a>
+                    </div>
+                </li>
+
+                <!-- help -->
+                <li class="nav-item dropdown mx-2">
+                    <a class="nav-link dropdown-toggle" id="helpDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+                    <div class="dropdown-menu" aria-labelledby="helpDropdown">
+                        <a class="dropdown-item" href="https://github.com/ARTIST-Association/CANVAS/" target="_blank">Manual</a>
+                        <a class="dropdown-item" href="https://github.com/ARTIST-Association/CANVAS/" target="_blank">Source</a>
+                        <a class="dropdown-item" href="https://github.com/ARTIST-Association/CANVAS/" target="_blank">About</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
