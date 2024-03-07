@@ -7,6 +7,14 @@
     <link href="{% static 'css/editor.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
+{% block script %}
+    {{ block.super }}
+    <script src="{% static 'js/editor.js' %}" type="application/javascript"></script>
+    <script type="application/javascript">
+
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="container-fluid d-flex flex-column min-vh-100 p-0">
         <!-- navigation bar -->
@@ -86,22 +94,42 @@
 
         <!-- main editor pane -->
         <main class="d-flex flex-row flex-fill">
+            <!-- canvas -->
             <div class="d-flex flex-column flex-fill bg-dark" id="canvas"></div>
-            <div class="d-flex flex-column flex-shrink-0 border-left" id="sidebar">
+
+            <!-- sidebar -->
+            <div class="d-flex flex-column flex-shrink-0 border-left p-2" id="sidebar">
+                <!-- properties -->
                 <ul class="nav nav-underline  nav-fill mb-auto" id="propertiesTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active" data-bs-toggle="tab" aria-current="page" href="#">
-                            <i class="bi-box-fill me-2"></i>Object</a>
+                        <a class="nav-link link-body-emphasis active" data-bs-toggle="tab" aria-current="page" href="#">
+                            <i class="bi-box me-2"></i>Object</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" data-bs-toggle="tab" href="#">
-                            <i class="bi-projector-fill me-2"></i>Scene</a>
+                        <a class="nav-link link-body-emphasis" data-bs-toggle="tab" href="#">
+                            <i class="bi-projector me-2"></i>Scene</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" data-bs-toggle="tab" href="#">
-                            <i class="bi-kanban-fill me-2"></i>Project</a>
+                        <a class="nav-link link-body-emphasis" data-bs-toggle="tab" href="#">
+                            <i class="bi-kanban me-2"></i>Project</a>
                     </li>
                 </ul>
+
+                <hr>
+
+                <!-- user -->
+                <div class="dropup d-flex justify-content-end me-3">
+                    <a class="dropdown-toggle d-flex align-items-center link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="rounded-circle bg-body-secondary me-3" style="width: 32px; height: 32px;"></div>
+                        <strong class="me-2">User</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small" style="">
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
             </div>
         </main>
     </div>
