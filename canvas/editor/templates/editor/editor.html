@@ -29,6 +29,37 @@
 {% endblock %}
 
 {% block body %}
+    <div class="modal modal-lg fade" id="keyboardModal" tabindex="-1" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="keyboardModalLabel">Keybindings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center pb-3">
+                        <div class="col-2">
+                            <span class="key">Esc</span>
+                        </div>
+                        <div class="col-10 fw-medium">
+                            Close dialogs
+                        </div>
+                    </div>
+                    <div class="row align-items-center pb-3">
+                        <div class="col-2">
+                            <span class="key">Ctrl</span>
+                            <span class="mx-1"> + </span>
+                            <span class="key">A</span>
+                        </div>
+                        <div class="col-10 fw-medium">
+                            Select everything
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container-fluid d-flex flex-column min-vh-100 p-0">
         <!-- navigation bar -->
         <nav class="navbar navbar-expand-sm navbar-light">
@@ -90,8 +121,8 @@
                             <i class="bi-question-square me-2"></i>Help
                         </a>
                         <div class="dropdown-menu" aria-labelledby="helpDropdown">
-                            <a class="dropdown-item" href="https://github.com/ARTIST-Association/CANVAS/" target="_blank">
-                                <i class="bi-keyboard me-2"></i>Manual
+                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#keyboardModal">
+                                <i class="bi-keyboard me-2"></i>Keyboard shortcuts
                             </a>
                             <a class="dropdown-item" href="https://github.com/ARTIST-Association/CANVAS/" target="_blank">
                                 <i class="bi-code-slash me-2"></i>Source
