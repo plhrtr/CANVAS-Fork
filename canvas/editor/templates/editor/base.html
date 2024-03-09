@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     {% block style %}
-        {% load static %}
         <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet" type="text/css" />
     {% endblock %}
 
     {% block script %}
-        {% load static %}
         <script src="{% static 'js/bootstrap.bundle.js' %}" type="application/javascript"></script>
     {% endblock %}
 </head>

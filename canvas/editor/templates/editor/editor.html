@@ -1,24 +1,36 @@
 {% extends 'editor/base.html' %}
+{% load static %}
 
 {% block style %}
     {{ block.super }}
-
-    {% load static %}
     <link href="{% static 'css/editor.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block script %}
     {{ block.super }}
-    <script src="{% static 'js/editor.js' %}" type="application/javascript"></script>
-    <script type="application/javascript">
+    <script type="importmap">
+        {
+            "imports": {
+                "menu": "{% static 'js/menu.mjs' %}"
+            }
+        }
+    </script>
+    <script type="module">
+        import { Editor } from "{% static 'js/editor.mjs' %}";
 
+        window.addEventListener('DOMContentLoaded', (_) => {
+            new Editor();
+        });
+
+    </script>
+    <script type="text/javascript">
     </script>
 {% endblock %}
 
 {% block body %}
     <div class="container-fluid d-flex flex-column min-vh-100 p-0">
         <!-- navigation bar -->
-        <nav class="navbar navbar-expand-sm navbar-light border-bottom">
+        <nav class="navbar navbar-expand-sm navbar-light">
             <a class="navbar-brand mx-4" href="#">CANVAS Editor</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto">
