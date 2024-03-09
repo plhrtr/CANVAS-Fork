@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 import { Menu } from "menu";
 
 let editorInstance = null;
