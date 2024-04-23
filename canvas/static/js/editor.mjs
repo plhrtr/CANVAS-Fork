@@ -28,8 +28,11 @@ export class Editor {
         this.camera.position.x = 3;
         this.camera.position.z = 10;
 
-        requestAnimationFrame(() => {
-            this.renderer.render(this.scene, this.camera);
-        });
+        this.animate();
     }
+
+    animate() {
+        requestAnimationFrame(() => this.animate());
+        this.renderer.render(this.scene, this.camera);
+    };
 }
