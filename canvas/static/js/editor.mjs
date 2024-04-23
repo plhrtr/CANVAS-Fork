@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 import { Menu } from "menu";
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 let editorInstance = null;
 
@@ -23,6 +24,8 @@ export class Editor {
         this.material = new THREE.MeshBasicMaterial({color: 0x00ff00});
         this.cube = new THREE.Mesh(this.geometry, this.material);
         this.scene.add(this.cube);
+
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
         this.camera.position.y = -2;
         this.camera.position.x = 3;
