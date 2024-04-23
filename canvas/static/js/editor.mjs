@@ -26,6 +26,8 @@ export class Editor {
         this.scene.add(this.cube);
 
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.gridHelper = new THREE.GridHelper(200, 50);
+        this.scene.add(this.gridHelper);
 
         this.camera.position.y = -2;
         this.camera.position.x = 3;
