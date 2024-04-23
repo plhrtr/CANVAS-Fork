@@ -16,6 +16,8 @@ export class Editor {
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, this.canvas.clientWidth / this.canvas.clientHeight, 0.1, 1000);
+        this.camera.position.set(5, 5, 10);
+
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
         this.canvas.appendChild(this.renderer.domElement);
@@ -28,10 +30,6 @@ export class Editor {
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.gridHelper = new THREE.GridHelper(200, 50);
         this.scene.add(this.gridHelper);
-
-        this.camera.position.y = -2;
-        this.camera.position.x = 3;
-        this.camera.position.z = 10;
 
         this.animate();
     }
