@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 import { Menu } from "menu";
+import { ViewHelper } from "compass";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 let editorInstance = null;
@@ -19,6 +20,8 @@ export class Editor {
         this.camera.position.set(5, 5, 10);
 
         this.renderer = new THREE.WebGLRenderer();
+        // since we render multiple times (scene and compass), we need to clear the renderer manually
+        this.renderer.autoClear = false;
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
         this.canvas.appendChild(this.renderer.domElement);
 
@@ -31,11 +34,15 @@ export class Editor {
         this.gridHelper = new THREE.GridHelper(200, 50);
         this.scene.add(this.gridHelper);
 
+        this.compass = new ViewHelper(this.camera, this.renderer.domElement);
+
         this.animate();
     }
 
     animate() {
         requestAnimationFrame(() => this.animate());
+        this.renderer.clear();
         this.renderer.render(this.scene, this.camera);
+        this.compass.render(this.renderer);
     };
 }
