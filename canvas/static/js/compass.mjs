@@ -126,9 +126,9 @@ class ViewHelper extends Object3D {
 
         this.geometry = new BoxGeometry(0.8, 0.05, 0.05).translate(0.4, 0, 0);
 
-        this.xAxis = new CompassAxis(this, 'x', color1, 'X');
-        this.yAxis = new CompassAxis(this, 'y', color2, 'Y');
-        this.zAxis = new CompassAxis(this, 'z', color3, 'Z');
+        this.xAxis = new CompassAxis(this, 'x', color1, 'N');
+        this.yAxis = new CompassAxis(this, 'y', color2, 'U');
+        this.zAxis = new CompassAxis(this, 'z', color3, 'E');
 
         this.interactiveObjects = [].concat(this.xAxis.getInteractiveObjects(), this.yAxis.getInteractiveObjects(), this.yAxis.getInteractiveObjects());
 
