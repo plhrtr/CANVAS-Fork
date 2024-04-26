@@ -20,6 +20,93 @@ import {
 	Vector4
 } from 'three';
 
+
+class CompassAxis {
+    constructor(compass, axisId, color, label) {
+        this.axisId = axisId;
+        this.axis = new Mesh( compass.geometry, this.getAxisMaterial(color) );
+        
+        if (this.axisId == 'y') {
+            this.axis.rotation.z = Math.PI / 2;
+        } else if (this.axisId == 'z') {
+            this.axis.rotation.y = - Math.PI / 2;
+        }
+
+        compass.add(this.axis);
+
+        this.posAxisHelper = new Sprite( this.getSpriteMaterial( color, label ) );
+		this.posAxisHelper.userData.type = 'pos' + label;
+		
+        this.negAxisHelper = new Sprite( this.getSpriteMaterial( color ) );
+		this.negAxisHelper.userData.type = 'neg' + label;
+
+        this.posAxisHelper.position[this.axisId] = 1;
+        this.negAxisHelper.position[this.axisId] = - 1;
+        this.negAxisHelper.scale.setScalar( 0.8 );
+
+        compass.add(this.posAxisHelper);
+        compass.add(this.negAxisHelper);
+    }
+
+	dispose() {
+        this.axis.material.dispose();
+
+        this.posAxisHelper.material.map.dispose();
+        this.negAxisHelper.material.map.dispose();
+
+        this.posAxisHelper.material.dispose();
+        this.negAxisHelper.material.dispose();
+    }
+    
+    getInteractiveObjects() {
+        return [this.posAxisHelper, this.negAxisHelper];
+    }
+
+    setOpacity(point) {
+        if ( point[this.axisId] >= 0 ) {
+
+            this.posAxisHelper.material.opacity = 1;
+            this.negAxisHelper.material.opacity = 0.5;
+
+        } else {
+
+            this.posAxisHelper.material.opacity = 0.5;
+            this.negAxisHelper.material.opacity = 1;
+
+        }
+    }
+
+    getAxisMaterial( color ) {
+        return new MeshBasicMaterial( { color: color, toneMapped: false } );
+    }
+
+    getSpriteMaterial( color, text = null ) {
+        const canvas = document.createElement( 'canvas' );
+        canvas.width = 64;
+        canvas.height = 64;
+
+        const context = canvas.getContext( '2d' );
+        context.beginPath();
+        context.arc( 32, 32, 16, 0, 2 * Math.PI );
+        context.closePath();
+        context.fillStyle = color.getStyle();
+        context.fill();
+
+        if ( text !== null ) {
+
+            context.font = '24px Arial';
+            context.textAlign = 'center';
+            context.fillStyle = '#000000';
+            context.fillText( text, 32, 41 );
+
+        }
+
+        const texture = new CanvasTexture( canvas );
+
+        return new SpriteMaterial( { map: texture, toneMapped: false } );
+    }
+}
+
 class ViewHelper extends Object3D {
 
 	constructor( camera, domElement ) {
@@ -37,7 +124,6 @@ class ViewHelper extends Object3D {
 		const color2 = new Color( '#8adb00' );
 		const color3 = new Color( '#2c8fff' );
 
-		this.interactiveObjects = [];
 		this.raycaster = new Raycaster();
 		this.mouse = new Vector2();
 		this.dummy = new Object3D();
@@ -47,53 +133,11 @@ class ViewHelper extends Object3D {
 
 		this.geometry = new BoxGeometry( 0.8, 0.05, 0.05 ).translate( 0.4, 0, 0 );
 
-		this.xAxis = new Mesh( this.geometry, this.getAxisMaterial( color1 ) );
-		this.yAxis = new Mesh( this.geometry, this.getAxisMaterial( color2 ) );
-		this.zAxis = new Mesh( this.geometry, this.getAxisMaterial( color3 ) );
+        this.xAxis = new CompassAxis(this, 'x', color1, 'X');
+        this.yAxis = new CompassAxis(this, 'y', color2, 'Y');
+        this.zAxis = new CompassAxis(this, 'z', color3, 'Z');
 
-		this.yAxis.rotation.z = Math.PI / 2;
-		this.zAxis.rotation.y = - Math.PI / 2;
-
-		this.add( this.xAxis );
-		this.add( this.zAxis );
-		this.add( this.yAxis );
-
-		this.posXAxisHelper = new Sprite( this.getSpriteMaterial( color1, 'X' ) );
-		this.posXAxisHelper.userData.type = 'posX';
-		this.posYAxisHelper = new Sprite( this.getSpriteMaterial( color2, 'Y' ) );
-		this.posYAxisHelper.userData.type = 'posY';
-		this.posZAxisHelper = new Sprite( this.getSpriteMaterial( color3, 'Z' ) );
-		this.posZAxisHelper.userData.type = 'posZ';
-		this.negXAxisHelper = new Sprite( this.getSpriteMaterial( color1 ) );
-		this.negXAxisHelper.userData.type = 'negX';
-		this.negYAxisHelper = new Sprite( this.getSpriteMaterial( color2 ) );
-		this.negYAxisHelper.userData.type = 'negY';
-		this.negZAxisHelper = new Sprite( this.getSpriteMaterial( color3 ) );
-		this.negZAxisHelper.userData.type = 'negZ';
-
-		this.posXAxisHelper.position.x = 1;
-		this.posYAxisHelper.position.y = 1;
-		this.posZAxisHelper.position.z = 1;
-		this.negXAxisHelper.position.x = - 1;
-		this.negXAxisHelper.scale.setScalar( 0.8 );
-		this.negYAxisHelper.position.y = - 1;
-		this.negYAxisHelper.scale.setScalar( 0.8 );
-		this.negZAxisHelper.position.z = - 1;
-		this.negZAxisHelper.scale.setScalar( 0.8 );
-
-		this.add( this.posXAxisHelper );
-		this.add( this.posYAxisHelper );
-		this.add( this.posZAxisHelper );
-		this.add( this.negXAxisHelper );
-		this.add( this.negYAxisHelper );
-		this.add( this.negZAxisHelper );
-
-		this.interactiveObjects.push( this.posXAxisHelper );
-		this.interactiveObjects.push( this.posYAxisHelper );
-		this.interactiveObjects.push( this.posZAxisHelper );
-		this.interactiveObjects.push( this.negXAxisHelper );
-		this.interactiveObjects.push( this.negYAxisHelper );
-		this.interactiveObjects.push( this.negZAxisHelper );
+		this.interactiveObjects = [].concat(this.xAxis.getInteractiveObjects(), this.yAxis.getInteractiveObjects(), this.yAxis.getInteractiveObjects());
 
 		this.point = new Vector3();
 		this.dim = 128;
@@ -116,43 +160,9 @@ class ViewHelper extends Object3D {
         this.point.set( 0, 0, 1 );
         this.point.applyQuaternion( this.camera.quaternion );
 
-        if ( this.point.x >= 0 ) {
-
-            this.posXAxisHelper.material.opacity = 1;
-            this.negXAxisHelper.material.opacity = 0.5;
-
-        } else {
-
-            this.posXAxisHelper.material.opacity = 0.5;
-            this.negXAxisHelper.material.opacity = 1;
-
-        }
-
-        if ( this.point.y >= 0 ) {
-
-            this.posYAxisHelper.material.opacity = 1;
-            this.negYAxisHelper.material.opacity = 0.5;
-
-        } else {
-
-            this.posYAxisHelper.material.opacity = 0.5;
-            this.negYAxisHelper.material.opacity = 1;
-
-        }
-
-        if ( this.point.z >= 0 ) {
-
-            this.posZAxisHelper.material.opacity = 1;
-            this.negZAxisHelper.material.opacity = 0.5;
-
-        } else {
-
-            this.posZAxisHelper.material.opacity = 0.5;
-            this.negZAxisHelper.material.opacity = 1;
-
-        }
-
-        //
+        this.xAxis.setOpacity(this.point);
+        this.yAxis.setOpacity(this.point);
+        this.zAxis.setOpacity(this.point);
 
         const x = this.domElement.offsetWidth - this.dim;
 
@@ -222,24 +232,9 @@ class ViewHelper extends Object3D {
 	dispose() {
         this.geometry.dispose();
 
-        this.xAxis.material.dispose();
-        this.yAxis.material.dispose();
-        this.zAxis.material.dispose();
-
-        this.posXAxisHelper.material.map.dispose();
-        this.posYAxisHelper.material.map.dispose();
-        this.posZAxisHelper.material.map.dispose();
-        this.negXAxisHelper.material.map.dispose();
-        this.negYAxisHelper.material.map.dispose();
-        this.negZAxisHelper.material.map.dispose();
-
-        this.posXAxisHelper.material.dispose();
-        this.posYAxisHelper.material.dispose();
-        this.posZAxisHelper.material.dispose();
-        this.negXAxisHelper.material.dispose();
-        this.negYAxisHelper.material.dispose();
-        this.negZAxisHelper.material.dispose();
-
+        this.xAxis.dispose();
+        this.yAxis.dispose();
+        this.zAxis.dispose();
     }
 
     prepareAnimationData( object, focusPoint ) {
@@ -292,36 +287,6 @@ class ViewHelper extends Object3D {
 
         this.dummy.lookAt( this.targetPosition );
         q2.copy( this.dummy.quaternion );
-    }
-
-    getAxisMaterial( color ) {
-        return new MeshBasicMaterial( { color: color, toneMapped: false } );
-    }
-
-    getSpriteMaterial( color, text = null ) {
-        const canvas = document.createElement( 'canvas' );
-        canvas.width = 64;
-        canvas.height = 64;
-
-        const context = canvas.getContext( '2d' );
-        context.beginPath();
-        context.arc( 32, 32, 16, 0, 2 * Math.PI );
-        context.closePath();
-        context.fillStyle = color.getStyle();
-        context.fill();
-
-        if ( text !== null ) {
-
-            context.font = '24px Arial';
-            context.textAlign = 'center';
-            context.fillStyle = '#000000';
-            context.fillText( text, 32, 41 );
-
-        }
-
-        const texture = new CanvasTexture( canvas );
-
-        return new SpriteMaterial( { map: texture, toneMapped: false } );
     }
 
 }
