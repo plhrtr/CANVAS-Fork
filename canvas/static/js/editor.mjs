@@ -19,7 +19,7 @@ export class Editor {
         this.camera = new THREE.PerspectiveCamera(75, this.canvas.clientWidth / this.canvas.clientHeight, 0.1, 1000);
         this.camera.position.set(-7.5, 2.5, 0.75);
 
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({antialias:true});
         // since we render multiple times (scene and compass), we need to clear the renderer manually
         this.renderer.autoClear = false;
         this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
