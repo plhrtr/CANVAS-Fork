@@ -36,13 +36,30 @@ export class Editor {
 
         this.compass = new ViewHelper(this.camera, this.renderer.domElement);
 
+        window.addEventListener('resize', () => this.onWindowResize());
+
         this.animate();
     }
 
     animate() {
         requestAnimationFrame(() => this.animate());
+        this.render();
+    };
+
+    render() {
         this.renderer.clear();
         this.renderer.render(this.scene, this.camera);
         this.compass.render(this.renderer);
+    };
+
+    updateAspectRatio() {
+        this.camera.aspect = this.canvas.offsetWidth / this.canvas.offsetHeight;
+        this.camera.updateProjectionMatrix();
+    };
+
+    onWindowResize() {
+        this.updateAspectRatio();
+        this.renderer.setSize(this.canvas.offsetWidth, this.canvas.offsetHeight);
+        this.render();
     };
 }
