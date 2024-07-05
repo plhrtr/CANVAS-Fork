@@ -17,7 +17,7 @@ import {
 } from 'three';
 
 
-class CompassAxis extends Object3D {
+class CompassAxisCircle extends Object3D {
     constructor(axisId, color, label, axisWidth = 0.05) {
         super();
         this.axisId = axisId;
@@ -99,7 +99,7 @@ class CompassAxis extends Object3D {
 
 class ViewHelper extends Object3D {
 
-    constructor(camera, domElement, size = 128) {
+    constructor(camera, domElement, size = 128, style = "circles") {
         super();
         this.camera = camera
         this.domElement = domElement
@@ -109,9 +109,13 @@ class ViewHelper extends Object3D {
 
         this.geometry = new BoxGeometry(0.8, 0.05, 0.05).translate(0.4, 0, 0);
 
-        this.xAxis = new CompassAxis('x', new Color('#ff3653'), 'N');
-        this.yAxis = new CompassAxis('y', new Color('#8adb00'), 'U');
-        this.zAxis = new CompassAxis('z', new Color('#2c8fff'), 'E');
+        if (style == "circles") {
+            this.xAxis = new CompassAxisCircle('x', new Color('#ff3653'), 'N');
+            this.yAxis = new CompassAxisCircle('y', new Color('#8adb00'), 'U');
+            this.zAxis = new CompassAxisCircle('z', new Color('#2c8fff'), 'E');
+        } else {
+            throw new Error('Invalid compass style ' + style);
+        }
         for (const axis of [this.xAxis, this.yAxis, this.zAxis]) {
             this.add(axis)
         }
