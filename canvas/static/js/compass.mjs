@@ -99,7 +99,7 @@ class CompassAxis extends Object3D {
 
 class ViewHelper extends Object3D {
 
-    constructor(camera, domElement) {
+    constructor(camera, domElement, size = 128) {
         super();
         this.camera = camera
         this.domElement = domElement
@@ -117,7 +117,7 @@ class ViewHelper extends Object3D {
         }
 
         this.point = new Vector3();
-        this.dim = 128;
+        this.dim = size;
     }
 
     render(renderer) {

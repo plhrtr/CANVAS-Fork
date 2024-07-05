@@ -34,7 +34,7 @@ export class Editor {
         this.gridHelper = new THREE.GridHelper(200, 50);
         this.scene.add(this.gridHelper);
 
-        this.compass = new ViewHelper(this.camera, this.renderer.domElement);
+        this.compass = new ViewHelper(this.camera, this.renderer.domElement, 256);
 
         window.addEventListener('resize', () => this.onWindowResize());
 
