@@ -132,14 +132,14 @@ class ViewHelper extends Object3D {
         this.yAxis.setOpacity(this.point);
         this.zAxis.setOpacity(this.point);
 
-        
+
         let previousViewport = new Vector4();
         renderer.getViewport(previousViewport); // save current viewport to reset later
-        
+
         // change viewport to dim x dim square in lower right corner
         const x = this.domElement.offsetWidth - this.dim;  // lower left corner of the viewport
         renderer.setViewport(x, 0, this.dim, this.dim);
-        
+
         renderer.clearDepth();
         renderer.render(this, this.orthoCamera);
 
