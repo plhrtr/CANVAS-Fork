@@ -59,6 +59,7 @@ class CompassAxisCircle extends Object3D {
     }
 
     setOpacity(point) {
+        // set opacity so the "hidden" part of the axis is partially transparent
         if (point[this.axisId] >= 0) {
             this.posAxisHelper.material.opacity = 1;
             this.negAxisHelper.material.opacity = 0.5;
@@ -66,6 +67,10 @@ class CompassAxisCircle extends Object3D {
             this.posAxisHelper.material.opacity = 0.5;
             this.negAxisHelper.material.opacity = 1;
         }
+    }
+
+    update(point) {
+        this.setOpacity(point);
     }
 
     getAxisMaterial(color) {
@@ -131,11 +136,9 @@ class ViewHelper extends Object3D {
         this.point.set(0, 0, 1);
         this.point.applyQuaternion(this.camera.quaternion);
 
-        // set opacity so the "hidden" part of each axis is partially transparent
-        this.xAxis.setOpacity(this.point);
-        this.yAxis.setOpacity(this.point);
-        this.zAxis.setOpacity(this.point);
-
+        this.xAxis.update(this.point);
+        this.yAxis.update(this.point);
+        this.zAxis.update(this.point);
 
         let previousViewport = new Vector4();
         renderer.getViewport(previousViewport); // save current viewport to reset later
