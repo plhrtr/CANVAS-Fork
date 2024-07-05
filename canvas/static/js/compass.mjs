@@ -3,6 +3,7 @@
  */
 
 import {
+    ArrowHelper,
     BoxGeometry,
     CanvasTexture,
     Color,
@@ -16,6 +17,51 @@ import {
     Vector4
 } from 'three';
 
+
+class CompassAxisArrow extends Object3D {
+    constructor(axisId, color, label) {
+        super();
+        this.axisId = axisId;
+
+        this.direction = new Vector3(1, 0, 0);
+        if (this.axisId == 'y') {
+            this.direction = new Vector3(0, 1, 0);
+        } else if (this.axisId == 'z') {
+            this.direction = new Vector3(0, 0, 1);
+        }
+
+        this.arrow = new ArrowHelper(this.direction, new Vector3(0, 0, 0), 1, color, 0.3, 0.3);
+        this.add(this.arrow);
+
+        this.label = this.getTextSprite(color, label);
+        this.label.position[this.axisId] = 1.25;
+        this.add(this.label);
+    }
+
+    update(point) { }
+
+    dispose() {
+        this.arrow.dispose();
+        this.label.material.map.dispose();
+        this.label.material.dispose();
+    }
+
+    getTextSprite(color, text) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+
+        const context = canvas.getContext('2d');
+        context.font = '24px Arial';
+        context.textAlign = 'center';
+        context.fillStyle = color.getStyle();
+        context.fillText(text, 32, 41);
+
+        const texture = new CanvasTexture(canvas);
+        const material = new SpriteMaterial({ map: texture, toneMapped: false });
+        return new Sprite(material);
+    }
+}
 
 class CompassAxisCircle extends Object3D {
     constructor(axisId, color, label, axisWidth = 0.05) {
@@ -104,7 +150,7 @@ class CompassAxisCircle extends Object3D {
 
 class ViewHelper extends Object3D {
 
-    constructor(camera, domElement, size = 128, style = "circles") {
+    constructor(camera, domElement, size = 128, style = "arrows") {
         super();
         this.camera = camera
         this.domElement = domElement
@@ -118,6 +164,10 @@ class ViewHelper extends Object3D {
             this.xAxis = new CompassAxisCircle('x', new Color('#ff3653'), 'N');
             this.yAxis = new CompassAxisCircle('y', new Color('#8adb00'), 'U');
             this.zAxis = new CompassAxisCircle('z', new Color('#2c8fff'), 'E');
+        } else if (style == "arrows") {
+            this.xAxis = new CompassAxisArrow('x', new Color('#ff3653'), 'N');
+            this.yAxis = new CompassAxisArrow('y', new Color('#8adb00'), 'U');
+            this.zAxis = new CompassAxisArrow('z', new Color('#2c8fff'), 'E');
         } else {
             throw new Error('Invalid compass style ' + style);
         }
