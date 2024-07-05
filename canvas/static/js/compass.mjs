@@ -17,10 +17,14 @@ import {
 } from 'three';
 
 
-class CompassAxis {
-    constructor(compass, axisId, color, label) {
+class CompassAxis extends Object3D {
+    constructor(axisId, color, label, axisWidth = 0.05) {
+        super();
         this.axisId = axisId;
-        this.axis = new Mesh(compass.geometry, this.getAxisMaterial(color));
+
+        // the axis is a box of width 0.8 (and height/depth 0.05), starting at (0,0,0)
+        const axisGeometry = new BoxGeometry(0.8, axisWidth, axisWidth).translate(0.4, 0, 0);
+        this.axis = new Mesh(axisGeometry, this.getAxisMaterial(color));
 
         if (this.axisId == 'y') {
             this.axis.rotation.z = Math.PI / 2;
@@ -28,7 +32,7 @@ class CompassAxis {
             this.axis.rotation.y = - Math.PI / 2;
         }
 
-        compass.add(this.axis);
+        this.add(this.axis);
 
         this.posAxisHelper = new Sprite(this.getSpriteMaterial(color, label));
         this.posAxisHelper.userData.type = 'pos' + label;
@@ -40,8 +44,8 @@ class CompassAxis {
         this.negAxisHelper.position[this.axisId] = - 1;
         this.negAxisHelper.scale.setScalar(0.8);
 
-        compass.add(this.posAxisHelper);
-        compass.add(this.negAxisHelper);
+        this.add(this.posAxisHelper);
+        this.add(this.negAxisHelper);
     }
 
     dispose() {
@@ -105,9 +109,12 @@ class ViewHelper extends Object3D {
 
         this.geometry = new BoxGeometry(0.8, 0.05, 0.05).translate(0.4, 0, 0);
 
-        this.xAxis = new CompassAxis(this, 'x', new Color('#ff3653'), 'N');
-        this.yAxis = new CompassAxis(this, 'y', new Color('#8adb00'), 'U');
-        this.zAxis = new CompassAxis(this, 'z', new Color('#2c8fff'), 'E');
+        this.xAxis = new CompassAxis('x', new Color('#ff3653'), 'N');
+        this.yAxis = new CompassAxis('y', new Color('#8adb00'), 'U');
+        this.zAxis = new CompassAxis('z', new Color('#2c8fff'), 'E');
+        for (const axis of [this.xAxis, this.yAxis, this.zAxis]) {
+            this.add(axis)
+        }
 
         this.point = new Vector3();
         this.dim = 128;
