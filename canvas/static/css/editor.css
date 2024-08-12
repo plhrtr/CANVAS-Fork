@@ -2,6 +2,10 @@
     width: 350px;
 }
 
+#canvas{
+    width: calc(100% - 350px);
+}
+
 .key {
     padding: 10px 10px 3px 6px;
     font-size: 80%;
