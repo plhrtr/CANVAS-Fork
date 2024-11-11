@@ -64,9 +64,23 @@ export class Editor {
     this.picker = new Picker();
     window.addEventListener("resize", () => this.onWindowResize());
 
-    this.canvas.addEventListener("click", (event) =>
-      this.pick({ x: event.clientX, y: event.clientY })
-    );
+    // prevent looking around from deselecting
+    this.mouseDownTime;
+    this.clickDuration;
+
+    this.canvas.addEventListener("mousedown", (event) => {
+      this.mouseDownTime = new Date().getTime();
+    });
+
+    this.canvas.addEventListener("mouseup", (event) => {
+      const mouseUpTime = new Date().getTime();
+      this.clickDuration = mouseUpTime - this.mouseDownTime;
+    });
+
+    this.canvas.addEventListener("click", (event) => {
+      if (this.clickDuration < 150)
+        this.pick({ x: event.clientX, y: event.clientY });
+    });
 
     this.animate();
   }

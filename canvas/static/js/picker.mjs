@@ -20,19 +20,18 @@ export class Picker {
     this.selectedObject = null;
     const intersectedObjects = this.raycaster.intersectObjects(scene.children);
     if (intersectedObjects.length) {
-      intersectedObjects.forEach((obj, counter) => {
-        if (obj.object.type != "GridHelper") {
-          this.selectedObject = obj.object;
+      for (let i = 0; i < intersectedObjects.length; i++) {
+        if (intersectedObjects[i].object.type != "GridHelper") {
+          this.selectedObject = intersectedObjects[i].object;
           this.lastColor = this.selectedObject.material.color.getHex();
           this.selectedObject.material.color.set(0xff0000);
-
-          const event = new CustomEvent("itemSelected", {
-            detail: { object: this.selectedObject },
-          });
-          document.getElementById("inspector").dispatchEvent(event);
-          console.log(counter);
+          break;
         }
-      });
+      }
     }
+    const event = new CustomEvent("itemSelected", {
+      detail: { object: this.selectedObject },
+    });
+    document.getElementById("inspector").dispatchEvent(event);
   }
 }

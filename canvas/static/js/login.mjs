@@ -90,8 +90,6 @@ export class LoginBackground {
     ]);
     this.scene.background = this.skybox;
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-
     window.addEventListener("resize", () => this.onWindowResize());
     this.animate();
   }

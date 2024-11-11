@@ -272,13 +272,17 @@
                         document.addEventListener('DOMContentLoaded', () => {
                             const inspector = document.getElementById('inspector');
                             inspector.addEventListener('itemSelected', (event) => {
-                                console.log(event);
-                                inspector.innerHTML = "You inspecting " + event.detail.object.name;
-                                //event.detail.object.translateY(5);
+                                if (event.detail.object) {
+                                    inspector.innerHTML = "You inspecting " + event.detail.object.name;
+                                    //event.detail.object.translateY(5);
+                                } else {
+                                    inspector.innerHTML = "Select a object by clicking on it"
+                                }
+                                
                             });
                         });
                     </script>
-                    <div id="inspector"></div>
+                    <div id="inspector">Select a object by clicking on it</div>
                 </div>
                 <!--Scene-->
                 <div class="tab-pane fade"
