@@ -1,0 +1,85 @@
+{% extends "management/base.html" %}
+{% load static %}
+{% block script %}
+    {{ block.super }}
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "{% static 'js/three.module.js' %}",
+            "three/addons/": "{% static 'js/three/examples/jsm/' %}",
+            "menu": "{% static 'js/menu.mjs' %}",
+            "compass": "{% static 'js/compass.mjs' %}"
+        }
+    }
+    </script>
+    <script type="module">
+    import { LoginBackground } from "{% static 'js/login.mjs' %}";
+
+    window.addEventListener('DOMContentLoaded', (_) => {
+        new LoginBackground();
+    });
+    </script>
+{% endblock script %}
+{% block style %}
+    {{ block.super }}
+    <link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css" />
+{% endblock style %}
+{% block body %}
+    <div class="d-flex flex-row">
+        <!--Login page-->
+        <div class="min-vh-100 d-inline-flex flex-column justify-content-center align-items-center p-5 gap-2 flex-shrink-0"
+             style="min-width: 20%">
+            <h1 class="headline text-center mb-4">
+                Welcome to
+                <br>
+                Canvas!
+            </h1>
+            <div class="d-flex flex-column gap-1">
+                <div class="d-flex gap-2 flex-column">
+                    <a class="rounded-5 border border-1 border-body-secondary text-decoration-none text-reset d-flex justify-content-center align-items-center gap-2 p-2 px-3 bg-body"
+                       href="">
+                        <i class="bi bi-google"></i>
+                        <p class="m-0">Continue with Google</p>
+                    </a>
+                    <a class="rounded-5 border border-1 border-body-secondary text-decoration-none text-reset d-flex justify-content-center align-items-center gap-2 p-2 px-3 bg-body"
+                       href="">
+                        <i class="bi bi-github"></i>
+                        <p class="m-0">Continue with Github</p>
+                    </a>
+                </div>
+                <div class="container text-center">
+                    <div class="row align-items-center">
+                        <div class="col-5 p-0">
+                            <hr>
+                        </div>
+                        <div class="col">or</div>
+                        <div class="col-5 p-0">
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <form class="d-flex flex-column" action="/editor">
+                    <div class="mb-3">
+                        <label for="username" class="form-label m-0">Username</label>
+                        <input type="username"
+                               class="form-control"
+                               id="username"
+                               aria-describedby="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label m-0">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <button type="submit" class="btn btn-primary rounded-5 fw-bold">Login</button>
+                </form>
+            </div>
+            <div class="d-flex justify-content-center mt-2">
+                <p>
+                    You have no account? <a href="">Sign up</a>
+                </p>
+            </div>
+        </div>
+        <!--Canvas for rendering a 3D scene-->
+        <div id="loginBg" class="w-100 rounded-start-5 overflow-hidden"></div>
+    </div>
+{% endblock body %}
