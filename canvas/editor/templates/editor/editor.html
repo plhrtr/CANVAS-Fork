@@ -274,7 +274,7 @@
                             const inspector = document.getElementById('inspector');
                             inspector.addEventListener('itemSelected', (event) => {
                                 if (event.detail.object) {
-                                    inspector.innerHTML = "You're inspecting " + event.detail.object.name;
+                                    inspector.innerHTML = "You're inspecting " + event.detail.object.id;
                                     //event.detail.object.translateY(5);
                                 } else {
                                     inspector.innerHTML = "Select a object by clicking on it"

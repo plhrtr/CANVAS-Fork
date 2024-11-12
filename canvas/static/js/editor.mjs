@@ -4,9 +4,7 @@ import { Menu } from "menu";
 import { ViewHelper } from "compass";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Picker } from "picker";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-import { Heliostat } from "objects";
+import { Heliostat, Terrain } from "objects";
 
 let editorInstance = null;
 
@@ -32,11 +30,10 @@ export class Editor {
     // since we render multiple times (scene and compass), we need to clear the renderer manually
     this.renderer.autoClear = false;
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+    this.renderer.shadowMap.enabled = true;
     this.canvas.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.gridHelper = new THREE.GridHelper(200, 50);
-    this.scene.add(this.gridHelper);
 
     this.compass = new ViewHelper(
       this.camera,
@@ -45,8 +42,47 @@ export class Editor {
       "circles"
     );
 
+    //scene background
+    this.skyboxLoader = new THREE.CubeTextureLoader();
+    this.skybox = this.skyboxLoader.load([
+      "/static/img/skybox/px.png",
+      "/static/img/skybox/nx.png",
+      "/static/img/skybox/py.png",
+      "/static/img/skybox/ny.png",
+      "/static/img/skybox/pz.png",
+      "/static/img/skybox/nz.png",
+    ]);
+    this.scene.background = this.skybox;
+
     this.HemisphereLight = new THREE.HemisphereLight();
     this.scene.add(this.HemisphereLight);
+
+    this.terrain = new Terrain(200);
+    this.scene.add(this.terrain);
+
+    this.directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+    this.directionalLight.position.set(50, 50, 100);
+    this.directionalLight.castShadow = true;
+    this.scene.add(this.directionalLight);
+    this.directionalLight.shadow.camera.top = 100;
+    this.directionalLight.shadow.camera.bottom = -100;
+    this.directionalLight.shadow.camera.left = 200;
+    this.directionalLight.shadow.camera.right = -200;
+
+    const cameraHelper = new THREE.CameraHelper(
+      this.directionalLight.shadow.camera
+    );
+    this.scene.add(cameraHelper);
+
+    for (let i = 0; i < 41; i++) {
+      for (let j = 0; j < 41; j++) {
+        const a = new Heliostat();
+        a.translateX(-100 + i * 5);
+        a.translateZ(-100 + j * 5);
+
+        this.scene.add(a);
+      }
+    }
 
     this.picker = new Picker();
     window.addEventListener("resize", () => this.onWindowResize());
@@ -65,24 +101,12 @@ export class Editor {
     });
 
     this.canvas.addEventListener("click", (event) => {
-      console.log(event);
       if (this.clickDuration < 150)
         this.pick({ x: event.clientX, y: event.clientY });
     });
 
-    for (let i = 0; i < 100; i++) {
-      for (let j = 0; j < 100; j++) {
-        const a = new Heliostat();
-        a.translateX(-25 + i * 5);
-        a.translateZ(-25 + j * 5);
-        this.scene.add(a);
-      }
-    }
-    console.log(this.scene);
     this.animate();
   }
-  py;
-
   animate() {
     requestAnimationFrame(() => this.animate());
     this.render();
