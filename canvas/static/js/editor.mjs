@@ -4,6 +4,9 @@ import { Menu } from "menu";
 import { ViewHelper } from "compass";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Picker } from "picker";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+import { Heliostat } from "objects";
 
 let editorInstance = null;
 
@@ -31,25 +34,6 @@ export class Editor {
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
     this.canvas.appendChild(this.renderer.domElement);
 
-    this.geometry = new THREE.BoxGeometry(1, 1, 1);
-    this.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    this.cube = new THREE.Mesh(this.geometry, this.material);
-
-    this.material2 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    this.cube2 = new THREE.Mesh(this.geometry, this.material2);
-    this.cube2.translateX(5);
-
-    this.material3 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    this.cube3 = new THREE.Mesh(this.geometry, this.material3);
-    this.cube3.translateX(-5);
-
-    this.scene.add(this.cube);
-    this.scene.add(this.cube2);
-    this.scene.add(this.cube3);
-    this.cube.name = "cube1";
-    this.cube3.name = "cube3";
-    this.cube2.name = "cube2";
-
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.gridHelper = new THREE.GridHelper(200, 50);
     this.scene.add(this.gridHelper);
@@ -60,6 +44,9 @@ export class Editor {
       200,
       "circles"
     );
+
+    this.HemisphereLight = new THREE.HemisphereLight();
+    this.scene.add(this.HemisphereLight);
 
     this.picker = new Picker();
     window.addEventListener("resize", () => this.onWindowResize());
@@ -78,12 +65,23 @@ export class Editor {
     });
 
     this.canvas.addEventListener("click", (event) => {
+      console.log(event);
       if (this.clickDuration < 150)
         this.pick({ x: event.clientX, y: event.clientY });
     });
 
+    for (let i = 0; i < 100; i++) {
+      for (let j = 0; j < 100; j++) {
+        const a = new Heliostat();
+        a.translateX(-25 + i * 5);
+        a.translateZ(-25 + j * 5);
+        this.scene.add(a);
+      }
+    }
+    console.log(this.scene);
     this.animate();
   }
+  py;
 
   animate() {
     requestAnimationFrame(() => this.animate());

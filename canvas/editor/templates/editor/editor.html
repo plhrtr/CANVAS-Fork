@@ -11,9 +11,10 @@
             "imports": {
                 "three": "{% static 'js/three.module.js' %}",
                 "three/addons/": "{% static 'js/three/examples/jsm/' %}",
-                "menu": "{% static "js/menu.mjs" %}",
+                "menu": "{% static 'js/menu.mjs' %}",
                 "compass": "{% static 'js/compass.mjs' %}",
-                "picker": "{% static 'js/picker.mjs' %}"
+                "picker": "{% static 'js/picker.mjs' %}",
+                "objects": "{% static 'js/objects.mjs' %}"
             }
         }
     </script>
@@ -273,7 +274,7 @@
                             const inspector = document.getElementById('inspector');
                             inspector.addEventListener('itemSelected', (event) => {
                                 if (event.detail.object) {
-                                    inspector.innerHTML = "You inspecting " + event.detail.object.name;
+                                    inspector.innerHTML = "You're inspecting " + event.detail.object.name;
                                     //event.detail.object.translateY(5);
                                 } else {
                                     inspector.innerHTML = "Select a object by clicking on it"
