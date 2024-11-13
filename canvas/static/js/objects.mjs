@@ -9,6 +9,7 @@ export class Heliostat extends Object3D {
     this.mesh;
     this.loader.load("/static/models/heliostat.glb", (gltf) => {
       this.mesh = gltf.scene;
+      this.mesh.scale.set(5, 5, 5);
       this.mesh.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -26,11 +27,12 @@ export class Terrain extends Object3D {
     this.terrainTexture = this.loader.load("/static/img/texture.png");
     this.terrainTexture.wrapS = THREE.RepeatWrapping;
     this.terrainTexture.wrapT = THREE.RepeatWrapping;
-    this.terrainTexture.repeat.set(100, 100);
+    this.terrainTexture.repeat.set(50, 50);
     this.terrain = new THREE.Mesh(
       new THREE.PlaneGeometry(size, size),
       new THREE.MeshStandardMaterial({
         map: this.terrainTexture,
+        color: 0x12c912,
       })
     );
     this.terrain.receiveShadow = true;

@@ -21,7 +21,7 @@ export class Editor {
       75,
       this.canvas.clientWidth / this.canvas.clientHeight,
       0.1,
-      1000
+      2000
     );
 
     this.camera.position.set(-7.5, 2.5, 0.75);
@@ -57,28 +57,29 @@ export class Editor {
     this.HemisphereLight = new THREE.HemisphereLight();
     this.scene.add(this.HemisphereLight);
 
-    this.terrain = new Terrain(200);
+    this.terrain = new Terrain(800);
     this.scene.add(this.terrain);
 
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 5);
-    this.directionalLight.position.set(50, 50, 100);
+    this.directionalLight.position.set(500, 300, 500);
     this.directionalLight.castShadow = true;
     this.scene.add(this.directionalLight);
-    this.directionalLight.shadow.camera.top = 100;
-    this.directionalLight.shadow.camera.bottom = -100;
-    this.directionalLight.shadow.camera.left = 200;
-    this.directionalLight.shadow.camera.right = -200;
+    this.directionalLight.shadow.camera.top = 300;
+    this.directionalLight.shadow.camera.bottom = -300;
+    this.directionalLight.shadow.camera.left = 600;
+    this.directionalLight.shadow.camera.right = -600;
+    this.directionalLight.shadow.camera.far = 2000;
 
     const cameraHelper = new THREE.CameraHelper(
       this.directionalLight.shadow.camera
     );
     this.scene.add(cameraHelper);
 
-    for (let i = 0; i < 41; i++) {
-      for (let j = 0; j < 41; j++) {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
         const a = new Heliostat();
-        a.translateX(-100 + i * 5);
-        a.translateZ(-100 + j * 5);
+        a.translateX(-30 + i * 15);
+        a.translateZ(-30 + j * 15);
 
         this.scene.add(a);
       }
@@ -101,7 +102,7 @@ export class Editor {
     });
 
     this.canvas.addEventListener("click", (event) => {
-      if (this.clickDuration < 150)
+      if (event.target.nodeName == "CANVAS" && this.clickDuration < 150)
         this.pick({ x: event.clientX, y: event.clientY });
     });
 

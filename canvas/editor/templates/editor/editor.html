@@ -115,7 +115,9 @@
 <div class="container-fluid d-flex flex-column min-vh-100 p-0">
     <!-- navigation bar -->
     <nav class="navbar navbar-expand-sm navbar-light">
-        <a class="navbar-brand mx-4" href="#">CANVAS Editor</a>
+        <a class="navbar-brand ms-4" href="#">
+            <div class="rounded-circle bg-primary" style="width: 32px; height: 32px"></div>
+        </a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <!-- file -->
@@ -217,7 +219,54 @@
     <!-- main editor pane -->
     <main class="d-flex flex-row flex-fill">
         <!-- canvas -->
-        <div class="mb-2 mx-0 ms-2 overflow-hidden rounded-3 shadow" id="canvas"></div>
+        <div class="mb-2 mx-0 ms-2 overflow-hidden rounded-3 shadow position-relative"
+             id="canvas">
+            <!--mode selector-->
+            <div class="position-absolute mt-4 ms-4 fs-5">
+                <ul class="nav nav-pills flex-column  p-2 gap-1 shadow-sm bg-body-secondary bg-opacity-75 rounded-4 border" id="pillNav2" role="tablist" style="backdrop-filter: blur(1rem)"
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active rounded-3"
+                                id="home-tab2"
+                                data-bs-toggle="tab"
+                                type="button"
+                                role="tab"
+                                aria-selected="true">
+                            <i class="bi bi-cursor"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-3"
+                                id="contact-tab2"
+                                data-bs-toggle="tab"
+                                type="button"
+                                role="tab"
+                                aria-selected="false">
+                            <i class="bi bi-bounding-box-circles"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-3"
+                                id="profile-tab2"
+                                data-bs-toggle="tab"
+                                type="button"
+                                role="tab"
+                                aria-selected="false">
+                            <i class="bi bi-arrows-move"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <!--quick settings-->
+            <div class="position-absolute bottom-0 mb-4 fs-5 d-flex justify-content-center w-100">
+                <div class="p-2 gap-2 shadow-sm bg-body-secondary bg-opacity-75 rounded-4 border d-flex"
+                     style="backdrop-filter: blur(1rem)">
+                    <button class="btn btn-primary custom-btn fw-bolder d-flex gap-1 text-reset">
+                        <i class="bi bi-chevron-up me-1"></i>Add object
+                    </button>
+                    <button class="btn btn-primary rounded-3 fw-bolder">Render</button>
+                </div>
+            </div>
+        </div>
         <!-- sidebar -->
         <div class="d-flex flex-column flex-shrink-0 border-left p-2 m-2 mt-0 bg-body-secondary rounded-3"
              id="sidebar">
@@ -300,7 +349,18 @@
             </div>
             <hr class="my-2">
             <!-- user -->
-            <div class="dropup d-flex justify-content-end me-3 py-1">
+            <div class="dropup d-flex justify-content-between mx-3 py-1">
+                <button class="btn btn-primary custom-btn text-reset fs-3 position-relative p-0 px-1 rounded-3">
+                    <span class="position-absolute top-0 start-100 translate-middle bg-danger bg-opacity-50 rounded-circle"
+                          style="padding: 0.7rem">
+                        <span class="visually-hidden">New alerts</span>
+                    </span>
+                    <span class="position-absolute top-0 start-100 translate-middle bg-danger rounded-circle"
+                          style="padding: 0.3rem">
+                        <span class="visually-hidden">New alerts</span>
+                    </span>
+                    <i class="bi bi-list-ul p-1"></i>
+                </button>
                 <a class="dropdown-toggle d-flex align-items-center link-body-emphasis text-decoration-none"
                    data-bs-toggle="dropdown"
                    aria-expanded="false">

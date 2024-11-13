@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Terrain } from "objects";
 
 export class LoginBackground {
   constructor() {
@@ -62,20 +62,7 @@ export class LoginBackground {
     this.light.shadow.camera.right = 100;
     this.light.shadow.camera.left = -100;
 
-    // terrain
-    this.loader = new THREE.TextureLoader();
-    this.terrainTexture = this.loader.load("/static/img/texture.png");
-    this.terrainTexture.wrapS = THREE.RepeatWrapping;
-    this.terrainTexture.wrapT = THREE.RepeatWrapping;
-    this.terrainTexture.repeat.set(100, 100);
-    this.terrainGeometry = new THREE.PlaneGeometry(500, 500);
-    this.terrainMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      map: this.terrainTexture,
-    });
-    this.terrain = new THREE.Mesh(this.terrainGeometry, this.terrainMaterial);
-    this.terrain.rotateX((3 * Math.PI) / 2);
-    this.terrain.receiveShadow = true;
+    this.terrain = new Terrain(200);
     this.scene.add(this.terrain);
 
     //scene background

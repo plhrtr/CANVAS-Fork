@@ -22,6 +22,7 @@ export class Picker {
     if (intersectedObjects.length) {
       for (let i = 0; i < intersectedObjects.length; i++) {
         if (intersectedObjects[i].object.type != "GridHelper") {
+          // detect if the object is selectable and than bubble up to the parent
           this.selectedObject = intersectedObjects[i].object;
           this.lastColor = this.selectedObject.material.color.getHex();
           this.selectedObject.material.color.set(0xff0000);
