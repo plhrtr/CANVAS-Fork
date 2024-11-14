@@ -34,6 +34,7 @@ export class Editor {
     this.canvas.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.screenSpacePanning = false;
     this.controls.maxDistance = 500;
     this.controls.minDistance = 10;
     this.controls.maxPolarAngle = Math.PI / 2 - 0.02;
