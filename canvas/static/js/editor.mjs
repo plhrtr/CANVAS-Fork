@@ -34,6 +34,9 @@ export class Editor {
     this.canvas.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.maxDistance = 500;
+    this.controls.minDistance = 10;
+    this.controls.maxPolarAngle = Math.PI / 2 - 0.02;
 
     this.compass = new ViewHelper(
       this.camera,
@@ -53,39 +56,32 @@ export class Editor {
       "/static/img/skybox/nz.png",
     ]);
     this.scene.background = this.skybox;
+    this.scene.fog = new THREE.Fog(0xdde0e0, 100, 2200);
 
     this.HemisphereLight = new THREE.HemisphereLight();
     this.scene.add(this.HemisphereLight);
 
-    this.terrain = new Terrain(800);
+    this.terrain = new Terrain(3000);
     this.scene.add(this.terrain);
 
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 5);
-    this.directionalLight.position.set(500, 300, 500);
+    this.directionalLight.position.set(200, 100, 200);
     this.directionalLight.castShadow = true;
     this.scene.add(this.directionalLight);
+
+    this.directionalLight.shadow.mapSize.set(2048, 2048);
+    this.directionalLight.shadow.radius = 4;
+    this.directionalLight.shadow.blurSamples = 75;
     this.directionalLight.shadow.camera.top = 300;
     this.directionalLight.shadow.camera.bottom = -300;
-    this.directionalLight.shadow.camera.left = 600;
-    this.directionalLight.shadow.camera.right = -600;
-    this.directionalLight.shadow.camera.far = 2000;
+    this.directionalLight.shadow.camera.left = 400;
+    this.directionalLight.shadow.camera.right = -400;
 
-    const cameraHelper = new THREE.CameraHelper(
-      this.directionalLight.shadow.camera
-    );
-    this.scene.add(cameraHelper);
+    this.selectableGroup = new THREE.Group();
+    this.scene.add(this.selectableGroup);
+    this.selectableGroup.add(new Heliostat());
 
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        const a = new Heliostat();
-        a.translateX(-30 + i * 15);
-        a.translateZ(-30 + j * 15);
-
-        this.scene.add(a);
-      }
-    }
-
-    this.picker = new Picker();
+    this.picker = new Picker(this.camera, this.selectableGroup);
     window.addEventListener("resize", () => this.onWindowResize());
 
     // prevent looking around from deselecting
@@ -106,6 +102,7 @@ export class Editor {
         this.pick({ x: event.clientX, y: event.clientY });
     });
 
+    console.log(this.scene);
     this.animate();
   }
   animate() {

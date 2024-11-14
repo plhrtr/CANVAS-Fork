@@ -4,28 +4,37 @@ import * as THREE from "three";
  * Test
  */
 export class Picker {
-  constructor() {
+  constructor(camera, group) {
     this.raycaster = new THREE.Raycaster();
     this.selectedObject = null;
-    this.lastColor = null;
+    this.group = group;
+    this.camera = camera;
   }
-  pick(normalizedPosition, scene, camera) {
+  pick(normalizedPosition) {
     // cast a ray from camera
-    this.raycaster.setFromCamera(normalizedPosition, camera);
+    this.raycaster.setFromCamera(normalizedPosition, this.camera);
 
-    // get list of intersected objects
     if (this.selectedObject) {
-      this.selectedObject.material.color.set(this.lastColor);
+      this.selectedObject.traverse((child) => {
+        if (child.type == "Mesh") {
+          child.material.emissive.set(0x000000);
+        }
+      });
     }
     this.selectedObject = null;
-    const intersectedObjects = this.raycaster.intersectObjects(scene.children);
+    const intersectedObjects = this.raycaster.intersectObjects(
+      this.group.children
+    );
     if (intersectedObjects.length) {
       for (let i = 0; i < intersectedObjects.length; i++) {
-        if (intersectedObjects[i].object.type != "GridHelper") {
-          // detect if the object is selectable and than bubble up to the parent
-          this.selectedObject = intersectedObjects[i].object;
-          this.lastColor = this.selectedObject.material.color.getHex();
-          this.selectedObject.material.color.set(0xff0000);
+        if (intersectedObjects[i].object.type == "Mesh") {
+          // bubble up to parent -> only two times (mesh -> group -> parent)
+          this.selectedObject = intersectedObjects[i].object.parent.parent;
+          this.selectedObject.traverse((child) => {
+            if (child.type == "Mesh") {
+              child.material.emissive.set(0xff0000);
+            }
+          });
           break;
         }
       }
