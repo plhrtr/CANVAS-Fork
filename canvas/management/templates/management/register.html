@@ -1,0 +1,61 @@
+{% extends "editor/base.html" %}
+{% load static %}
+{% block script %}
+    {{ block.super }}
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "{% static 'js/three.module.js' %}",
+            "three/addons/": "{% static 'js/three/examples/jsm/' %}",
+            "objects": "{% static 'js/objects.mjs' %}"
+        }
+    }
+    </script>
+    <script type="module">
+    import { LoginBackground } from "{% static 'js/login.mjs' %}";
+
+    window.addEventListener('DOMContentLoaded', (_) => {
+        new LoginBackground();
+    });
+    </script>
+{% endblock script %}
+{% block body %}
+    <div class="d-flex flex w-100" style="height: 100vh">
+        <div class="p-4 h-100 d-flex flex-column px-5 justify-content-center">
+            <p style="font-size: 3rem; font-weight: 900;">Create your account</p>
+            <form action="">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-floating">
+                            <input type="name" class="form-control rounded-4" id="floatingInput">
+                            <label for="floatingInput">Name</label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-floating">
+                            <input type="lastname" class="form-control rounded-4" id="floatingPassword">
+                            <label for="floatingPassword">Last Name</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control rounded-4" id="floatingPassword">
+                    <label for="floatingPassword">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control rounded-4" id="floatingPassword">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control rounded-4" id="floatingPassword">
+                    <label for="floatingPassword">Confirm Password</label>
+                </div>
+                <div class="w-full">
+                    <button type="submit" class="btn btn-primary rounded-4 fw-bolder py-2">Sign Up</button>
+                </div>
+            </form>
+        </div>
+        <div id="loginBg"
+             class="d-flex overflow-hidden rounded-start-5 flex-fill w-100 h-100"></div>
+    </div>
+{% endblock body %}

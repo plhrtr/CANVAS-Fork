@@ -9,7 +9,9 @@ export class Heliostat extends Object3D {
     this.mesh;
     this.loader.load("/static/models/heliostat.glb", (gltf) => {
       this.mesh = gltf.scene;
-      this.mesh.scale.set(5, 5, 5);
+      this.mesh.scale.set(2, 2, 2);
+      this.lookAt(0, 0, 0);
+      this.rotateY(Math.PI / 2);
       this.mesh.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -29,7 +31,7 @@ export class Terrain extends Object3D {
     this.terrain = new THREE.Mesh(
       new THREE.CircleGeometry(size / 2),
       new THREE.MeshStandardMaterial({
-        color: 0x6eb86a,
+        color: 0x5fd159,
       })
     );
     this.terrain.receiveShadow = true;
@@ -56,14 +58,19 @@ export class Terrain extends Object3D {
   }
 }
 
-export class Grass extends Object3D {
+export class Receiver extends Object3D {
   constructor() {
     super();
     this.loader = new GLTFLoader();
     this.mesh;
-    this.loader.load("/static/models/grass.glb", (gltf) => {
+    this.loader.load("/static/models/tower.glb", (gltf) => {
       this.mesh = gltf.scene;
       this.add(this.mesh);
+      this.mesh.traverse((child) => {
+        if (child.type == "Mesh") {
+          child.castShadow = true;
+        }
+      });
     });
   }
 }

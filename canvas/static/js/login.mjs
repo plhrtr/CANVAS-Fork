@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Terrain } from "objects";
+import { Terrain, Heliostat, Receiver } from "objects";
 
 export class LoginBackground {
   constructor() {
@@ -14,12 +14,11 @@ export class LoginBackground {
       75,
       this.canvas.clientWidth / this.canvas.clientHeight,
       0.1,
-      1000
+      2000
     );
 
     // if nothing is visible at big gridhelper to see if scene is even rendering
-    this.camera.position.set(0, 5, 100);
-    this.camera.translateY(10);
+    this.camera.translateY(30);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
@@ -27,42 +26,41 @@ export class LoginBackground {
 
     this.canvas.appendChild(this.renderer.domElement);
 
-    // add a donut
-    this.geometry = new THREE.TorusGeometry(10, 5, 100);
-    this.material = new THREE.MeshStandardMaterial({
-      color: 0xff6347,
-    });
-    this.torus = new THREE.Mesh(this.geometry, this.material);
-    this.torus.translateY(15);
-    this.torus.castShadow = true;
-    this.scene.add(this.torus);
+    this.selectableGroup = new THREE.Group();
+    this.scene.add(this.selectableGroup);
+    this.selectableGroup.add(new Receiver());
 
-    // add a cube
-    this.geometryCube = new THREE.BoxGeometry(5, 5, 5);
-    this.materialCube = new THREE.MeshStandardMaterial({
-      color: 0x3f9502,
-    });
-    this.cube = new THREE.Mesh(this.geometryCube, this.materialCube);
-    this.cube.translateX(25);
-    this.cube.translateY(7);
-    this.cube.castShadow = true;
-    this.scene.add(this.cube);
+    for (let i = 1; i <= 12; i++) {
+      for (let j = 0; j < 5 + i * 10; j++) {
+        const a = new Heliostat();
+        a.position.set(
+          (20 + i * 10) * Math.sin((j / (5 + i * 10)) * 2 * Math.PI),
+          0,
+          (20 + i * 10) * Math.cos((j / (5 + i * 10)) * 2 * Math.PI)
+        );
+        this.selectableGroup.add(a);
+      }
+    }
 
     //sun light
-    this.sun = new THREE.HemisphereLight(0xffffbb, 0x080820, 2);
+    this.sun = new THREE.HemisphereLight();
     this.scene.add(this.sun);
 
-    this.light = new THREE.DirectionalLight(0xffffbb, 3);
-    this.light.position.set(10, 20, 50);
-    this.light.target.lookAt(this.cube);
-    this.light.castShadow = true;
-    this.scene.add(this.light);
-    this.light.shadow.camera.top = 100;
-    this.light.shadow.camera.bottom = -100;
-    this.light.shadow.camera.right = 100;
-    this.light.shadow.camera.left = -100;
+    this.directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+    this.directionalLight.position.set(200, 100, 200);
+    this.directionalLight.castShadow = true;
+    this.scene.add(this.directionalLight);
 
-    this.terrain = new Terrain(200);
+    this.directionalLight.shadow.mapSize.set(2048, 2048);
+    this.directionalLight.shadow.radius = 4;
+    this.directionalLight.shadow.blurSamples = 75;
+    this.directionalLight.shadow.camera.top = 200;
+    this.directionalLight.shadow.camera.bottom = -200;
+    this.directionalLight.shadow.camera.left = 400;
+    this.directionalLight.shadow.camera.right = -400;
+    this.directionalLight.shadow.camera.far = 1000;
+
+    this.terrain = new Terrain(3000);
     this.scene.add(this.terrain);
 
     //scene background
@@ -76,6 +74,7 @@ export class LoginBackground {
       "/static/img/skybox/nz.png",
     ]);
     this.scene.background = this.skybox;
+    this.scene.fog = new THREE.Fog(0xdde0e0, 100, 2200);
 
     window.addEventListener("resize", () => this.onWindowResize());
     this.animate();
@@ -83,9 +82,9 @@ export class LoginBackground {
 
   animate() {
     requestAnimationFrame(() => this.animate());
-    this.camera.position.x = 50 * Math.sin(Date.now() * 0.00005);
-    this.camera.position.z = 50 * Math.cos(Date.now() * 0.00005);
-    this.camera.lookAt(this.torus.position);
+    this.camera.position.x = 100 * Math.sin(Date.now() * 0.00005);
+    this.camera.position.z = 100 * Math.cos(Date.now() * 0.00005);
+    this.camera.lookAt(0, 10, 0);
     this.renderer.render(this.scene, this.camera);
   }
 

@@ -1,4 +1,4 @@
-{% extends "management/base.html" %}
+{% extends "editor/base.html" %}
 {% load static %}
 {% block script %}
     {{ block.super }}
@@ -46,35 +46,22 @@
                         <p class="m-0">Continue with Github</p>
                     </a>
                 </div>
-                <div class="container text-center">
-                    <div class="row align-items-center">
-                        <div class="col-5 p-0">
-                            <hr>
-                        </div>
-                        <div class="col">or</div>
-                        <div class="col-5 p-0">
-                            <hr>
-                        </div>
+                <hr>
+                <form class="d-flex flex-column" action="projects">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control rounded-4" id="floatingInput">
+                        <label for="floatingInput">Email address</label>
                     </div>
-                </div>
-                <form class="d-flex flex-column" action="/editor">
-                    <div class="mb-3">
-                        <label for="username" class="form-label m-0">Username</label>
-                        <input type="username"
-                               class="form-control"
-                               id="username"
-                               aria-describedby="username">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label m-0">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control rounded-4" id="floatingPassword">
+                        <label for="floatingPassword">Password</label>
                     </div>
                     <button type="submit" class="btn btn-primary rounded-5 fw-bold">Login</button>
                 </form>
             </div>
             <div class="d-flex justify-content-center mt-2">
                 <p>
-                    You have no account? <a href="">Sign up</a>
+                    You have no account? <a href="/register">Sign up</a>
                 </p>
             </div>
         </div>

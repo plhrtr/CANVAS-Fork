@@ -4,7 +4,7 @@ import { Menu } from "menu";
 import { ViewHelper } from "compass";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Picker } from "picker";
-import { Heliostat, Terrain } from "objects";
+import { Heliostat, Terrain, Receiver } from "objects";
 
 let editorInstance = null;
 
@@ -73,15 +73,27 @@ export class Editor {
     this.directionalLight.shadow.mapSize.set(2048, 2048);
     this.directionalLight.shadow.radius = 4;
     this.directionalLight.shadow.blurSamples = 75;
-    this.directionalLight.shadow.camera.top = 300;
-    this.directionalLight.shadow.camera.bottom = -300;
+    this.directionalLight.shadow.camera.top = 200;
+    this.directionalLight.shadow.camera.bottom = -200;
     this.directionalLight.shadow.camera.left = 400;
     this.directionalLight.shadow.camera.right = -400;
+    this.directionalLight.shadow.camera.far = 1000;
 
     this.selectableGroup = new THREE.Group();
     this.scene.add(this.selectableGroup);
-    this.selectableGroup.add(new Heliostat());
+    this.selectableGroup.add(new Receiver());
 
+    for (let i = 1; i <= 12; i++) {
+      for (let j = 0; j < 5 + i * 10; j++) {
+        const a = new Heliostat();
+        a.position.set(
+          (20 + i * 10) * Math.sin((j / (5 + i * 10)) * 2 * Math.PI),
+          0,
+          (20 + i * 10) * Math.cos((j / (5 + i * 10)) * 2 * Math.PI)
+        );
+        this.selectableGroup.add(a);
+      }
+    }
     this.picker = new Picker(this.camera, this.selectableGroup);
     window.addEventListener("resize", () => this.onWindowResize());
 
