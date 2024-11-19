@@ -31,6 +31,8 @@
     {% include "management/settings.html" %}
     <!--user profile modal-->
     {% include "management/profile.html" %}
+    <!--job interface modal-->
+    {% include "management/jobInterface.html" %}
     <!-- keybindings modal -->
     <div class="modal modal-lg fade"
          id="keyboardModal"
@@ -460,7 +462,9 @@
             </div>
             <!-- user -->
             <div class="dropup d-flex justify-content-between mx-3 py-1">
-                <button class="btn btn-primary custom-btn text-reset fs-3 position-relative p-0 px-1 rounded-3">
+                <button class="btn btn-primary custom-btn text-reset fs-3 position-relative p-0 px-1 rounded-3"
+                        data-bs-toggle="modal"
+                        data-bs-target="#jobInterface">
                     <span class="position-absolute top-0 start-100 translate-middle bg-danger bg-opacity-50 rounded-circle"
                           style="padding: 0.7rem">
                         <span class="visually-hidden">New alerts</span>
