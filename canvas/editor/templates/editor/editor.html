@@ -27,6 +27,10 @@
     </script>
 {% endblock %}
 {% block body %}
+    <!--settings modal-->
+    {% include "management/settings.html" %}
+    <!--user profile modal-->
+    {% include "management/profile.html" %}
     <!-- keybindings modal -->
     <div class="modal modal-lg fade"
          id="keyboardModal"
@@ -484,13 +488,17 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">Settings</a>
+                        <button class="dropdown-item"
+                                data-bs-toggle="modal"
+                                data-bs-target="#settings">Settings</button>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <button class="dropdown-item"
+                                data-bs-toggle="modal"
+                                data-bs-target="#profile">Profile</button>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">Sign out</a>
+                        <a class="dropdown-item" href="/">Sign out</a>
                     </li>
                 </ul>
             </div>

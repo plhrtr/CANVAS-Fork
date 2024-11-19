@@ -25,12 +25,16 @@
             </div>
         </div>
     </div>
+    <!--settings modal-->
+    {% include "management/settings.html" %}
+    <!--user profile modal-->
+    {% include "management/profile.html" %}
     <!--project overview-->
     <div class="d-flex flex-column w-100 justify-content-between align-items-center vh-100 gap-2">
-        <div class="p-2 pt-4">
-            <h1 class="fw-bolder">My projects</h1>
+        <div class="p-2 pt-3">
+            <h1 style="font-size: 3rem; font-weight: 900">My projects</h1>
         </div>
-        <div class="p-2 d-flex flex-column gap-2 w-100 justify-conten-center align-items-center">
+        <div class="p-1 d-flex flex-column gap-2 w-100 justify-conten-center align-items-center">
             <button class="btn btn-outline-primary rounded-4 fw-bolder fs-5"
                     data-bs-toggle="modal"
                     data-bs-target="#createProject">
@@ -113,13 +117,17 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">Settings</a>
+                        <button class="dropdown-item"
+                                data-bs-toggle="modal"
+                                data-bs-target="#settings">Settings</button>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <button class="dropdown-item"
+                                data-bs-toggle="modal"
+                                data-bs-target="#profile">Profile</button>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">Sign out</a>
+                        <a class="dropdown-item" href="/">Sign out</a>
                     </li>
                 </ul>
             </div>
