@@ -170,9 +170,9 @@ class ViewHelper extends Object3D {
     this.geometry = new BoxGeometry(0.8, 0.05, 0.05).translate(0.4, 0, 0);
 
     if (style == "circles") {
-      this.xAxis = new CompassAxisCircle("x", new Color("#ff3653"), "X");
-      this.yAxis = new CompassAxisCircle("y", new Color("#8adb00"), "Y");
-      this.zAxis = new CompassAxisCircle("z", new Color("#2c8fff"), "Z");
+      this.xAxis = new CompassAxisCircle("x", new Color("#ff3653"), "N");
+      this.yAxis = new CompassAxisCircle("y", new Color("#8adb00"), "U");
+      this.zAxis = new CompassAxisCircle("z", new Color("#2c8fff"), "E");
     } else if (style == "arrows") {
       this.xAxis = new CompassAxisArrow("x", new Color("#ff3653"), "N");
       this.yAxis = new CompassAxisArrow("y", new Color("#8adb00"), "U");

@@ -22,8 +22,6 @@ export class Heliostat extends Object3D {
   }
 }
 
-// receiver
-
 export class Terrain extends Object3D {
   constructor(size) {
     super();
@@ -38,7 +36,7 @@ export class Terrain extends Object3D {
     this.terrain.rotateX((3 * Math.PI) / 2);
     this.add(this.terrain);
 
-    // mountains
+    // mountains/trees
     this.mountains = new THREE.Group();
     this.add(this.mountains);
     for (let i = 0; i < 100; i++) {

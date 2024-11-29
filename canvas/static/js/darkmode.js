@@ -2,6 +2,8 @@
  * Color mode toggler for Bootstrap's docs (https://getbootstrap.com/)
  * Copyright 2011-2024 The Bootstrap Authors
  * Licensed under the Creative Commons Attribution 3.0 Unported License.
+ *
+ * Updated to fit own purposes.
  */
 
 (() => {
@@ -12,13 +14,11 @@
 
   const getPreferredTheme = () => {
     const storedTheme = getStoredTheme();
-    if (storedTheme) {
-      return storedTheme;
+    if (!storedTheme) {
+      return "auto";
     }
 
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return storedTheme;
   };
 
   const setTheme = (theme) => {
@@ -36,13 +36,24 @@
 
   setTheme(getPreferredTheme());
 
-  const showActiveTheme = (theme, focus = false) => {
-    const themeSwitcher = document.querySelector("#bd-theme");
+  const showActiveTheme = (theme) => {
+    const themeSwitcher = document.getElementById("mode-toggle");
 
     if (!themeSwitcher) {
       return;
     }
-    // update to own custom design of button update of buttons
+
+    switch (theme) {
+      case "light":
+        themeSwitcher.innerHTML = "<i class='bi bi-brightness-high'></i> light";
+        break;
+      case "dark":
+        themeSwitcher.innerHTML = "<i class='bi bi-moon-stars'></i> dark";
+        break;
+      default:
+        themeSwitcher.innerHTML = "<i class='bi bi-circle-half'></i> auto";
+        break;
+    }
   };
 
   window
@@ -58,10 +69,22 @@
     showActiveTheme(getPreferredTheme());
 
     document.getElementById("mode-toggle").addEventListener("click", () => {
-      const theme = getStoredTheme() == "dark" ? "light" : "dark";
+      var theme;
+      switch (getStoredTheme()) {
+        case "light":
+          theme = "dark";
+          break;
+        case "dark":
+          theme = "auto";
+          break;
+        default:
+          theme = "light";
+          break;
+      }
+
       setStoredTheme(theme);
       setTheme(theme);
-      showActiveTheme(theme, true);
+      showActiveTheme(theme);
     });
   });
 })();

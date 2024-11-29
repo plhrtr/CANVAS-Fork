@@ -47,13 +47,19 @@
                     </a>
                 </div>
                 <hr>
-                <form class="d-flex flex-column" action="projects">
+                <form class="d-flex flex-column" action="{% url "projects" %}">
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-4" id="floatingInput">
+                        <input type="email"
+                               class="form-control rounded-4"
+                               id="floatingInput"
+                               placeholder="name@example.com">
                         <label for="floatingInput">Email address</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control rounded-4" id="floatingPassword">
+                        <input type="password"
+                               class="form-control rounded-4"
+                               id="floatingPassword"
+                               placeholder="Password">
                         <label for="floatingPassword">Password</label>
                     </div>
                     <button type="submit" class="btn btn-primary rounded-5 fw-bold">Login</button>
@@ -61,7 +67,7 @@
             </div>
             <div class="d-flex justify-content-center mt-2">
                 <p>
-                    You have no account? <a href="/register">Sign up</a>
+                    Don't have an account? <a href="{% url "register" %}">Sign up</a>
                 </p>
             </div>
         </div>
