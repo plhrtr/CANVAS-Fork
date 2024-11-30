@@ -5,6 +5,7 @@ import { ViewHelper } from "compass";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Picker } from "picker";
 import { Heliostat, Terrain, Receiver } from "objects";
+import { TransformControls } from "./three/examples/jsm/controls/TransformControls.js";
 
 let editorInstance = null;
 
@@ -81,7 +82,43 @@ export class Editor {
 
     this.selectableGroup = new THREE.Group();
     this.scene.add(this.selectableGroup);
-    this.selectableGroup.add(new Receiver());
+    this.receiver = new Receiver();
+    this.selectableGroup.add(this.receiver);
+
+    this.transformControls = new TransformControls(
+      this.camera,
+      this.renderer.domElement
+    );
+    this.transformControls.addEventListener("dragging-changed", (event) => {
+      this.controls.enabled = !event.value;
+    });
+    this.scene.add(this.transformControls.getHelper());
+    this.transformControls.size = 0.7;
+
+    window.addEventListener("keydown", (event) => {
+      switch (event.key) {
+        case "Shift":
+          this.transformControls.setTranslationSnap(2);
+          this.transformControls.setRotationSnap(THREE.MathUtils.degToRad(15));
+          this.transformControls.setScaleSnap(0.25);
+          break;
+        case "r":
+          this.transformControls.mode = "rotate";
+          break;
+        case "m":
+          this.transformControls.mode = "translate";
+      }
+    });
+
+    window.addEventListener("keyup", (event) => {
+      switch (event.key) {
+        case "Shift":
+          this.transformControls.setTranslationSnap(null);
+          this.transformControls.setRotationSnap(null);
+          this.transformControls.setScaleSnap(null);
+          break;
+      }
+    });
 
     for (let i = 1; i <= 12; i++) {
       for (let j = 0; j < 5 + i * 10; j++) {
@@ -151,5 +188,10 @@ export class Editor {
     const normY = (relY / canvasPos.height) * -2 + 1;
 
     this.picker.pick({ x: normX, y: normY }, this.scene, this.camera);
+    if (this.picker.getSelectedObject()) {
+      this.transformControls.attach(this.picker.getSelectedObject());
+    } else {
+      this.transformControls.detach();
+    }
   }
 }

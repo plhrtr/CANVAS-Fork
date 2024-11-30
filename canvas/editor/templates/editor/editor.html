@@ -258,6 +258,16 @@
                             <i class="bi bi-arrows-move"></i>
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link rounded-3"
+                                id="profile-tab2"
+                                data-bs-toggle="tab"
+                                type="button"
+                                role="tab"
+                                aria-selected="false">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
             <!--quick settings-->
@@ -511,7 +521,6 @@
 
             let maxHeight = tabRect.bottom - userSettingsRect.top;
             maxHeight = Math.abs(maxHeight);
-            console.log(maxHeight)
             content.style.height = maxHeight + "px";
         };
 
