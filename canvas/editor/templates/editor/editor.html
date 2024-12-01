@@ -14,7 +14,8 @@
                 "menu": "{% static 'js/menu.mjs' %}",
                 "compass": "{% static 'js/compass.mjs' %}",
                 "picker": "{% static 'js/picker.mjs' %}",
-                "objects": "{% static 'js/objects.mjs' %}"
+                "objects": "{% static 'js/objects.mjs' %}",
+                "inspector": "{% static 'js/inspector.mjs' %}"
             }
         }
     </script>
@@ -340,20 +341,24 @@
                          tabindex="0">
                         <!--Inspector-->
                         <script type="module">
+                            import { Inspector } from "inspector";
+                            import { Editor } from "{% static 'js/editor.mjs' %}";
+
+                            const inspector = new Inspector((new Editor()).getPicker());
                             document.addEventListener('DOMContentLoaded', () => {
-                                const inspector = document.getElementById('inspector');
-                                inspector.addEventListener('itemSelected', (event) => {
+                                const inspectorHTML = document.getElementById('inspector');
+                                inspectorHTML.addEventListener('itemSelected', (event) => {
                                     if (event.detail.object) {
-                                        inspector.innerHTML = "You're inspecting " + event.detail.object.id;
-                                        //event.detail.object.translateY(5);
+                                        inspectorHTML.innerHTML = inspector.render();
+                                        inspector.listen();
                                     } else {
-                                        inspector.innerHTML = "Select a object by clicking on it"
+                                        inspectorHTML.innerHTML = "Select a object by clicking on it"
                                     }
                 
                                 });
                             });
                         </script>
-                        <div id="inspector">Select a object by clicking on it</div>
+                        <div id="inspector" class="p-2">Select a object by clicking on it</div>
                     </div>
                     <!--Scene-->
                     <div class="tab-pane fade"

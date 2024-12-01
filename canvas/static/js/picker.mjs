@@ -42,7 +42,7 @@ export class Picker {
     const event = new CustomEvent("itemSelected", {
       detail: { object: this.selectedObject },
     });
-    window.dispatchEvent(event);
+    document.getElementById("inspector").dispatchEvent(event);
   }
 
   getSelectedObject() {

@@ -20,6 +20,10 @@ export class Heliostat extends Object3D {
       this.add(this.mesh);
     });
   }
+
+  renderConfigurator() {
+    return;
+  }
 }
 
 export class Terrain extends Object3D {
@@ -70,5 +74,9 @@ export class Receiver extends Object3D {
         }
       });
     });
+  }
+
+  renderConfigurator() {
+    return "Receiver";
   }
 }

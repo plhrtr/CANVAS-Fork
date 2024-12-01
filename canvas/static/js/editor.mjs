@@ -71,9 +71,9 @@ export class Editor {
     this.directionalLight.castShadow = true;
     this.scene.add(this.directionalLight);
 
-    this.directionalLight.shadow.mapSize.set(2048, 2048);
-    this.directionalLight.shadow.radius = 4;
-    this.directionalLight.shadow.blurSamples = 75;
+    this.directionalLight.shadow.mapSize.set(8192 * 2, 8192 * 2);
+    this.directionalLight.shadow.radius = 2;
+    this.directionalLight.shadow.blurSamples = 10;
     this.directionalLight.shadow.camera.top = 200;
     this.directionalLight.shadow.camera.bottom = -200;
     this.directionalLight.shadow.camera.left = 400;
@@ -151,8 +151,6 @@ export class Editor {
       if (event.target.nodeName == "CANVAS" && this.clickDuration < 150)
         this.pick({ x: event.clientX, y: event.clientY });
     });
-
-    console.log(this.scene);
     this.animate();
   }
   animate() {
@@ -193,5 +191,9 @@ export class Editor {
     } else {
       this.transformControls.detach();
     }
+  }
+
+  getPicker() {
+    return this.picker;
   }
 }
